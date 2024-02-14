@@ -3,9 +3,12 @@ import CustomTable, { TableHeader } from "UI/CustomTable/CustomTable";
 import CustomTag from "UI/CustomTag/CustomTag";
 import CircleCheck from "UI/Icons/CircleCheck";
 import CircleCross from "UI/Icons/CircleCross";
+import { useMemoizedFn } from "ahooks";
 import { Avatar, Button, Flex, Space } from "antd";
 import { ColumnsType } from "antd/es/table";
 import FilterRow from "components/FilterRow/FilterRow";
+import { itemPerPage } from "lib/helpers/common.helper";
+import { useState } from "react";
 // import assets from "json/assets";
 import { Link } from "react-router-dom";
 import { PharmacytabWrapper } from "styles/StyledComponents/PharmacytabWrapper";
@@ -20,15 +23,33 @@ const PharmacyTab = (props: propsType) => {
 
   const { pharmacy, isPending } = props;
 
+  const [filter, setFilter] = useState({
+    pharmacyLength: 5,
+    pharmacySortColumn: "name",
+    pharmacySortOrder: "DSC",
+    pharmacySearch: "",
+    pharmacyPage: 1,
+  })
+
+  // useMemoizedFn -- not to change the function reference
+  const updateFilter = useMemoizedFn((newValues: typeof filter) => {
+    setFilter((prevParams) => {
+      return {
+        ...prevParams,
+        ...newValues,
+      };
+    });
+  });
+
   const columns: ColumnsType<Doc> = [
     {
-      title: (props) => <TableHeader title="PharmacyNew" {...props} />,
+      title: (props) => <TableHeader title="Pharmacy" {...props} />,
       dataIndex: "name",
       key: "pharmacy",
       render: (name: Doc["name"], data: Doc) => {
         return (
           <Space>
-            <Avatar size={32} src="" alt={data?.name?.toUpperCase()}>{name?.toUpperCase()}</Avatar>
+            <Avatar size={32} src="" style={{ backgroundColor: "#0D80D8" }}>{name?.charAt(0)}</Avatar>
             <Link to={`/pharmacy/`}>{data?.name}</Link>
           </Space>
         );
@@ -48,15 +69,15 @@ const PharmacyTab = (props: propsType) => {
               status === "active"
                 ? "success"
                 : status === "pending"
-                ? "processing"
-                : "default"
+                  ? "processing"
+                  : "default"
             }
             text={
               status === "active"
                 ? "Active"
                 : status === "pending"
-                ? "Approval Pending"
-                : "Inactive"
+                  ? "Approval Pending"
+                  : "Inactive"
             }
           />
         </>
@@ -98,7 +119,25 @@ const PharmacyTab = (props: propsType) => {
       <CustomTable
         columns={columns}
         dataSource={pharmacy?.docs}
+        pagination={{
+          total: pharmacy?.count,
+          pageSize: filter?.pharmacyLength,
+          current: filter?.pharmacyPage,
+          onChange: (num) => {
+            updateFilter({ pharmacyPage: num});
+          },
+        }}
         loading={isPending}
+        perPageItem={{
+          options: itemPerPage(),
+          value: Number(filter?.pharmacyLength),
+          onChange: (value) => {
+            updateFilter({
+              pharmacyLength: (value),
+              pharmacyPage: 1,
+            });
+          },
+        }}
       />
     </PharmacytabWrapper>
   );

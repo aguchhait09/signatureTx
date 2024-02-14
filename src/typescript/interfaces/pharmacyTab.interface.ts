@@ -9,6 +9,7 @@ export interface Data {
   perPage: number;
   pages: number;
   docs: Doc[];
+  pharmacyLength: number
 }
 
 export interface Doc {

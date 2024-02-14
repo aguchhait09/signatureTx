@@ -59,7 +59,7 @@ export const getFileExtension = (fileName: string) => {
       .trim()
       .toLowerCase();
   }
-  return "";
+  return "";    
 };
 
 export const trimStartAndEnd = (value?: string) => {
@@ -98,3 +98,10 @@ export const validatePropName =
   (propName: string) => {
     return !propNames.includes(propName);
   };
+
+  // table row function
+
+  export const itemPerPage = ()=>{
+    const rowCount = [5, 20, 30, 50, 100, 200]
+    return rowCount?.map((i)=>({value: i, label: i}))
+  }

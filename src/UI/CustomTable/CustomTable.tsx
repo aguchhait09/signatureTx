@@ -3,6 +3,7 @@ import Chevorndown from "UI/Icons/Chevorn-down";
 import SortIcon from "UI/Icons/SortIcon";
 import { Flex, Select, Table } from "antd";
 import { TableProps } from "antd/es/table";
+import { itemPerPage } from "lib/helpers/common.helper";
 
 const TableWrapper = styled("div")`
   position: relative;
@@ -144,12 +145,16 @@ export const TableHeader = (props: { title?: string; sort?: boolean }) => {
 };
 interface CustomtableProps extends TableProps<any> {
   tableHeightsmall?: boolean;
+  perPageItem: React.ComponentProps<typeof Select>
 }
 const CustomTable = ({
   className,
   columns,
   dataSource,
   tableHeightsmall,
+  pagination,
+  perPageItem = { options: itemPerPage() },
+  ...rest
 }: CustomtableProps) => {
   return (
     <TableWrapper>
@@ -161,18 +166,24 @@ const CustomTable = ({
           x: 1200,
         }}
         className={className}
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          pageSize: 5,
+          showSizeChanger: false,
+          ...pagination,
+        }}
+        {...rest}
       />
-
-      <Flex align="center" className="absolute-table-pagination">
-        <p>View</p>{" "}
-        <Select
-          defaultValue="14"
-          options={[{ value: 14, label: 14 }]}
-          suffixIcon={<Chevorndown />}
-        />{" "}
-        <p>item per page</p>
-      </Flex>
+      {perPageItem && !rest?.footer ? (
+        <Flex align="center" className="absolute-table-pagination">
+          <p>View</p>
+          <Select
+            defaultValue={5}
+            suffixIcon={<Chevorndown />}
+            {...perPageItem}
+          />
+          <p>item per page</p>
+        </Flex>
+      ) : null}
     </TableWrapper>
   );
 };

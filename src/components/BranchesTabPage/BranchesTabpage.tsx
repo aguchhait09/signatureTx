@@ -28,7 +28,7 @@ const BranchesTabpage = (props: propsType) => {
       sorter: true,
       render: (name: Doc["name"], data: Doc) => (
         <Space>
-          <Avatar size={32} src={data?.name} />
+          <Avatar size={32} src={data?.name} style={{backgroundColor: '#ff9e16'}}>{name?.charAt(0)}</Avatar>
           <Link to={"/"}>{name}</Link>
         </Space>
       ),
@@ -57,7 +57,7 @@ const BranchesTabpage = (props: propsType) => {
       key: "pharmacy",
       render: (_, data) => (
         <Space>
-          <Avatar size={32} src={data?.pharmacy?.logo} />
+          <Avatar size={32} src={data?.pharmacy?.logo} alt=""/>
           <Link to={`/pharmacy/${data?.pharmacy?.id}`}>
             {data?.pharmacy?.name}
           </Link>
