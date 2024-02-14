@@ -1,0 +1,618 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--textPrimaryColor);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  background-color: var(--bodyColor) !important;
+  overflow-x: hidden;
+}
+
+@keyframes animation-highlight {
+  0% {
+    box-shadow: rgb(195, 233, 190) 0px 0px 0px 0px;
+  }
+
+  100% {
+    box-shadow: rgba(174, 154, 255, 0) 0 0 0 10px;
+  }
+}
+
+.animateSplash {
+  animation: animation-highlight 1.2s linear 0s infinite normal none running;
+}
+
+.ant-typography h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0 !important;
+}
+
+a {
+  font-weight: 500;
+}
+
+span,
+p {
+  &.ant-typography {
+    font-size: 14px;
+    font-weight: 400;
+    color: #101828;
+    font-family: "Inter", sans-serif !important;
+  }
+}
+
+// Modal design
+
+.editModalWrapper {
+  width: 637px !important;
+
+  .ant-modal-content {
+    padding: 0;
+
+    .ant-modal-header {
+      padding: 16px 20px;
+      margin: 0;
+      border-bottom: 1px solid #f2f4f7;
+
+      .ant-modal-title {
+        font-size: 20px;
+        color: #101828;
+        font-weight: 600;
+      }
+    }
+
+    .ant-modal-body {
+      padding: 20px;
+      border-bottom: 1px solid #f2f4f7;
+
+      .modalBody {
+        text-align: center;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .modalBodySwitxh {
+        align-items: flex-start;
+      }
+
+      .pharmaLogo {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 12px;
+
+        button {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+
+        .whiteCrossIcon {
+          background: #1760e8;
+          padding: 4px;
+          border-radius: 50%;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+
+    .ant-modal-footer {
+      margin: 0;
+      padding: 16px 20px;
+      text-align: center;
+
+      button {
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: 500;
+        min-height: 40px;
+        border-radius: 30px;
+        min-width: 108px;
+        font-weight: 500;
+
+        &.ant-btn-default {
+          border: 1px solid #101828;
+        }
+      }
+    }
+
+    .editFrom {
+      .inputField {
+        margin-bottom: 16px;
+
+        label {
+          font-size: 12px;
+          font-weight: 500;
+          color: #344054;
+          display: block;
+          margin-bottom: 5px;
+        }
+
+        .ant-tag {
+          width: 100%;
+          max-width: 96px;
+        }
+      }
+
+      .inputFieldRadio {
+        margin-bottom: 0;
+
+        .ant-radio-group {
+          display: flex;
+          align-items: center;
+
+          .ant-radio-wrapper {
+            display: flex;
+            align-items: center;
+
+            &:not(:last-child) {
+              margin-right: 32px;
+            }
+
+            span {
+              font-weight: 400;
+              font-size: 16px;
+              color: #101828;
+            }
+
+            .ant-radio-checked .ant-radio-inner {
+              background-color: #ffffff;
+            }
+
+            .ant-radio-inner {
+              width: 20px;
+              height: 20px;
+
+              &::after {
+                inset-block-start: -50%;
+                inset-inline-start: -50%;
+                width: 38px;
+                height: 38px;
+                margin-block-start: -1px;
+                margin-inline-start: -1px;
+                background-color: #2055de;
+                border-radius: 50%;
+              }
+            }
+          }
+        }
+      }
+
+      .ant-row {
+        margin: 0 -6px;
+
+        .ant-col {
+          padding: 0 6px;
+        }
+      }
+    }
+  }
+
+  .changeRoleBody {
+    p {
+      font-size: 16px;
+      font-weight: 400;
+      color: #101828;
+
+      span {
+        font-weight: 500;
+      }
+    }
+
+    .ant-list {
+      border-radius: 12px;
+      border: 1px solid #F2F4F7;
+      background: #F9FAFB;
+      padding: 12px;
+      margin-top: 16px;
+      color: #101828;
+      font-size: 16px;
+
+      .ant-list-header {
+        padding: 0;
+        border-block-end: none;
+        margin-bottom: 10px;
+      }
+
+      ul {
+        li {
+          padding: 0 0 3px 10px;
+          border-block-end: none;
+          margin-left: 10px;
+          position: relative;
+
+          &::after {
+            position: absolute;
+            z-index: 9;
+            content: "";
+            top: 50%;
+            background: #101828;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            left: 0;
+            transform: translate(-50%, -50%);
+          }
+
+          span {
+            color: #101828;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.resetPassModal {
+  width: 420px !important;
+}
+
+.changeRoleModal {
+  width: 440px !important;
+}
+
+// select popup design
+
+.popupDropdown {
+  border-radius: 16px;
+  border: 1px solid var(--Black-100, #f2f4f7);
+  background: var(--Black-white, #fff);
+  box-shadow: 0px 0px 0px 0px rgba(25, 41, 66, 0.01),
+    1px 1px 3px 0px rgba(25, 41, 66, 0.01),
+    2px 6px 6px 0px rgba(25, 41, 66, 0.01),
+    5px 12px 8px 0px rgba(25, 41, 66, 0.01),
+    9px 22px 10px 0px rgba(25, 41, 66, 0),
+    15px 35px 11px 0px rgba(25, 41, 66, 0);
+  padding: 8px;
+
+  .ant-select-item {
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #101828;
+    line-height: 1.2;
+  }
+
+  .ant-select-item-option-active,
+  .ant-select-item-option-selected {
+    background-color: transparent !important;
+    border-radius: 0;
+  }
+}
+
+.ant-modal-mask {
+  background-color: rgba(16, 24, 40, 0.2) !important;
+}
+
+.tab-wrapper {
+  position: relative;
+
+  .date-picker-wrap-absolute {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+
+  .filter-row-absolute {
+    position: absolute;
+    right: 0;
+    top: -78px;
+    z-index: 1;
+  }
+}
+
+// .ant-btn-icon {
+//   margin-bottom: 0 !important;
+// }
+
+input,
+textarea {
+  &:-webkit-autofill {
+    transition: background-color 5000s;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+// User Details modal
+
+.userDetailsModal {
+  .userDetailsModalBody {
+    .userdetailsRow {
+      border-bottom: 1px solid #e4e7ec;
+    }
+  }
+
+  .userdetailsWrap {
+    margin-bottom: 16px;
+
+    h5 {
+      font-weight: 500;
+      font-size: 14px;
+      color: #101828;
+    }
+
+    h4 {
+      font-weight: 400;
+      font-size: 14px;
+      color: #101828;
+      margin: 0;
+    }
+
+    span {
+      font-weight: 400;
+      font-size: 12px;
+      color: #667085;
+    }
+
+    .userdetailsSwitch {
+      display: flex;
+      align-items: center;
+
+      .tooltipBtn {
+        padding: 0;
+        border: none;
+        height: auto;
+        line-height: 1;
+        margin-left: 8px;
+      }
+    }
+  }
+
+  .userdetailsPassword {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+
+    .restoreBtn {
+      font-size: 14px;
+      font-weight: 400;
+      padding: 9px 15px;
+      min-height: auto;
+      margin-left: 24px;
+    }
+  }
+
+  .branchesCardWrap {
+    padding: 12px;
+    border: 1px solid #f2f4f7;
+    background: #f9fafb;
+    border-radius: 12px;
+    max-height: 248px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #E4E7EC;
+      border-radius: 16px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #fff;
+      border-radius: 16px;
+    }
+
+    .branchesCardWrapHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+
+      h4 {
+        font-size: 14px;
+        font-weight: 500;
+        color: #101828;
+      }
+    }
+
+    ul {
+      li {
+        padding: 8px 0;
+        border-block-end: 1px solid #E4E7EC;
+
+        .branchesListTxt {
+          .ant-avatar-image {
+            margin-right: 8px;
+          }
+
+          .ant-typography {
+            color: #124DBA;
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
+
+        button {
+          padding: 0;
+          border: none;
+          height: auto;
+          line-height: 1;
+        }
+
+        .branchesAdd {
+          display: flex;
+          align-items: center;
+
+          .ant-select {
+            height: auto;
+            margin-right: 24px;
+
+            .ant-select-selector {
+              padding: 4px 4px;
+              border-radius: 25px;
+            }
+
+            .ant-typography {
+              color: #101828;
+            }
+          }
+
+          .branchesAddButton {
+            display: flex;
+            align-items: center;
+
+            button {
+              &:not(:last-child) {
+                margin-right: 8px;
+              }
+
+              svg {
+                width: 24px;
+                height: 24px;
+              }
+            }
+          }
+        }
+      }
+
+
+    }
+  }
+
+  .branchesListModal {
+    background: transparent;
+    border: none;
+    padding: 0;
+    max-height: 428px;
+    min-height: auto;
+
+    .branchesCardWrapHead {
+      margin: 0;
+
+      h4 {
+        font-size: 16px;
+        font-weight: 400;
+      }
+    }
+
+    ul {
+      li {
+        border-block-end: none;
+      }
+    }
+  }
+}
+
+.branchesAddPopup {
+  .ant-select-item-option-selected {
+    background-color: #e2e2e2 !important;
+  }
+}
+
+// User Details modal
+
+// tooltip design
+.tooltipCard {
+  max-width: 360px;
+
+  .ant-tooltip-arrow {
+    display: none;
+  }
+
+  .ant-tooltip-inner {
+    padding: 16px;
+    border-radius: 16px;
+    background-color: #fff;
+    box-shadow: 0px 0px 0px 0px rgba(37, 46, 55, 0.03),
+      6px 9px 7px 0px rgba(37, 46, 55, 0.02);
+
+    .ant-typography {
+      font-weight: 500;
+      color: #101828;
+      font-size: 16px;
+    }
+
+    .ant-list {
+      ul {
+        li {
+          padding: 0;
+          border-block-end: none;
+          padding-left: 12px;
+          position: relative;
+          margin-left: 12px;
+
+          &::after {
+            position: absolute;
+            z-index: 9;
+            background: #101828;
+            width: 5px;
+            height: 5px;
+            content: "";
+            border-radius: 50%;
+            top: 50%;
+            left: 0;
+            transform: translate(0%, -50%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.ant-checkbox-wrapper {
+  align-items: center;
+  font-family: "Inter", sans-serif;
+
+  .ant-checkbox-inner {
+    border-radius: 4px;
+  }
+
+  span {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+
+.ant-popover-inner {
+  min-width: 387px;
+}
+
+.popover-list {
+  list-style: none;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 8px;
+
+    button {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+// tooltip design
