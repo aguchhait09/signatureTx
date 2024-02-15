@@ -15,7 +15,7 @@ export default function PharmacyAndBranch() {
   //   console.log("pharmaData", pharmacy);
   //   return { pharmacy, isPending }
   // }
-  // Count
+  
   const [pharmacyCount, setPharmacyCount] = useState(0)
 
 

@@ -19,7 +19,6 @@ import { Doc, pharmacyTab } from "typescript/interfaces/pharmacyTab.interface";
 // interface propsType {
 //   pharmacy: Data;
 //   isPending: boolean;
-//   filterPass?: any
 // }
 
 interface filterInterface {

@@ -2,13 +2,22 @@ import endpoints from "config/endpoints.config";
 import { axiosInstance } from "request";
 import { branchAll } from "typescript/interfaces/branchAll.interface";
 
-export const branchApi = async () => {
+interface filterInterface {
+  pharmacyLength?: number,
+  pharmacySortColumn?: string,
+  pharmacySortOrder?: string,
+  pharmacySearch?: string,
+  pharmacyPage?: number,
+  pharmacyStatus?: string
+}
+
+export const branchApi = async (params: filterInterface) => {
   const res = await axiosInstance.post<branchAll>(endpoints.brances.branchAll, {
-    length: 10,
-    page: 1,
+    page: params?.pharmacyPage,
+    length: params?.pharmacyLength,
     sort: {
-      column: "name",
-      order: "ASC",
+      column: params?.pharmacySortColumn,
+      order: params?.pharmacySortOrder,
     },
   });
   console.log("resBranch", res);
