@@ -8,6 +8,7 @@ import Searchicon from "UI/Icons/Searchicon";
 import XIcon from "UI/Icons/XIcon";
 import { Button, Checkbox, Flex, Input, Popover, Typography } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { ChangeEventHandler } from "react";
 
 import { FilterRowWrapper } from "styles/StyledComponents/FilterRowWrapper";
 
@@ -20,7 +21,8 @@ interface FilterRowprops {
   showAddButton?: boolean;
   hideCheckbox?: boolean;
   // onChange?: ((status: string) => void) | undefined;
-  onChange?: ((e: CheckboxChangeEvent) => void) | undefined
+  onChange?: ((e: CheckboxChangeEvent) => void) | undefined;
+  onSearch?: ChangeEventHandler<HTMLInputElement> | undefined;
 }
 
 const PopoverContent = () => {
@@ -53,6 +55,7 @@ const FilterRow = ({
   showAddButton,
   hideCheckbox,
   onChange,
+  onSearch,
 }: FilterRowprops) => {
   return (
     <FilterRowWrapper>
@@ -67,6 +70,7 @@ const FilterRow = ({
               placeholder="Search"
               className="searchbar"
               prefix={<Searchicon />}
+              onChange={onSearch}
             />
           )}
           {!hidefilter && (

@@ -3,12 +3,12 @@ import { axiosInstance } from "request";
 import { pharmacyTab } from "typescript/interfaces/pharmacyTab.interface";
 
 interface filterInterface {
-  pharmacyLength?: number,
-  pharmacySortColumn?: string,
-  pharmacySortOrder?: string,
-  pharmacySearch?: string,
-  pharmacyPage?: number,
-  pharmacyStatus?: string
+  pharmacyLength?: number;
+  pharmacySortColumn?: string;
+  pharmacySortOrder?: string;
+  pharmacySearch?: string;
+  pharmacyPage?: number;
+  pharmacyStatus?: string;
 }
 
 export const pharmacyCall = async (params: filterInterface) => {
@@ -19,10 +19,9 @@ export const pharmacyCall = async (params: filterInterface) => {
       column: params?.pharmacySortColumn,
       order: params?.pharmacySortOrder,
     },
-    // keyword: params?.pharmacySearch,  
-    status: params?.pharmacyStatus
+    keyword: params?.pharmacySearch,
+    status: params?.pharmacyStatus,
   });
   console.log("resPharmacy", res);
   return res?.data;
 };
-

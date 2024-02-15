@@ -19,6 +19,7 @@ export const branchApi = async (params: filterInterface) => {
       column: params?.pharmacySortColumn,
       order: params?.pharmacySortOrder,
     },
+    keyword: params?.pharmacySearch
   });
   console.log("resBranch", res);
   return res?.data;

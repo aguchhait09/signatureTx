@@ -22,12 +22,12 @@ import { Doc, pharmacyTab } from "typescript/interfaces/pharmacyTab.interface";
 // }
 
 interface filterInterface {
-  pharmacyLength?: number,
-  pharmacySortColumn?: string,
-  pharmacySortOrder?: string,
-  pharmacySearch?: string,
-  pharmacyPage?: number,
-  pharmacyStatus?: string
+  pharmacyLength?: number;
+  pharmacySortColumn?: string;
+  pharmacySortOrder?: string;
+  pharmacySearch?: string;
+  pharmacyPage?: number;
+  pharmacyStatus?: string;
 }
 // interface typeParams{
 //     page?: number,
@@ -40,28 +40,27 @@ interface filterInterface {
 //   }
 
 const PharmacyTab = (props: any) => {
-
   // const { pharmacy, isPending } = props;
-   
+
   const [filter, setFilter] = useState<filterInterface>({
     pharmacyLength: 5,
     pharmacySortColumn: "name",
     pharmacySortOrder: "ASC",
     pharmacySearch: "",
     pharmacyPage: 1,
-    pharmacyStatus:   ""
-  })
-  console.log('filter', filter);
+    pharmacyStatus: "",
+  });
+  console.log("filter", filter);
 
   // Data Fetch
   const { isPending, data: pharmacy } = useQuery({
     queryKey: ["pharmacyTab", filter],
-    queryFn: () => pharmacyCall({...filter}),
+    queryFn: () => pharmacyCall({ ...filter }),
   });
 
   // Props for count ... child to parent
-  if(props.count){
-    props.count(pharmacy?.count)
+  if (props.count) {
+    props.count(pharmacy?.count);
   }
 
   // useMemoizedFn -- not to change the function reference
@@ -82,7 +81,9 @@ const PharmacyTab = (props: any) => {
       render: (name: Doc["name"], data: Doc) => {
         return (
           <Space>
-            <Avatar size={32} src="" style={{ backgroundColor: "#0D80D8" }}>{name?.charAt(0)}</Avatar>
+            <Avatar size={32} src="" style={{ backgroundColor: "#0D80D8" }}>
+              {name?.charAt(0)}
+            </Avatar>
             <Link to={`/pharmacy/`}>{data?.name}</Link>
           </Space>
         );
@@ -102,15 +103,15 @@ const PharmacyTab = (props: any) => {
               status === "active"
                 ? "success"
                 : status === "pending approval"
-                  ? "processing"
-                  : "error"
+                ? "processing"
+                : "error"
             }
             text={
               status === "active"
                 ? "Active"
                 : status === "pending approval"
-                  ? "Approval Pending"
-                  : "Inactive"
+                ? "Approval Pending"
+                : "Inactive"
             }
           />
         </>
@@ -148,8 +149,18 @@ const PharmacyTab = (props: any) => {
 
   return (
     <PharmacytabWrapper>
-      <FilterRow hideDatePicker 
-      onChange={(e)=>(e.target.checked ? updateFilter({pharmacyStatus: "pending approval"}) : updateFilter({pharmacyStatus: ""}))}
+      <FilterRow
+        hideDatePicker
+        onChange={(e) =>
+          e.target.checked
+            ? updateFilter({ pharmacyStatus: "pending approval" })
+            : updateFilter({ pharmacyStatus: "" })
+        }
+        onSearch={(e) => {
+          e.target.value
+            ? updateFilter({ pharmacySearch: e.target.value })
+            : updateFilter({ ...filter });
+        }}
       />
       <CustomTable
         columns={columns}
@@ -171,7 +182,7 @@ const PharmacyTab = (props: any) => {
               pharmacyLength: value as number,
               pharmacyPage: 1,
             });
-            console.log('value', value);
+            console.log("value", value);
           },
         }}
       />

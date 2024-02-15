@@ -21,16 +21,15 @@ interface propsType {
 }
 
 interface filterInterface {
-  pharmacyLength?: number,
-  pharmacySortColumn?: string,
-  pharmacySortOrder?: string,
-  pharmacySearch?: string,
-  pharmacyPage?: number,
-  pharmacyStatus?: string
+  pharmacyLength?: number;
+  pharmacySortColumn?: string;
+  pharmacySortOrder?: string;
+  pharmacySearch?: string;
+  pharmacyPage?: number;
+  pharmacyStatus?: string;
 }
 
 const BranchesTabpage = (props: any) => {
-
   // State for payload
   const [filter, setFilter] = useState<filterInterface>({
     pharmacyLength: 5,
@@ -38,23 +37,23 @@ const BranchesTabpage = (props: any) => {
     pharmacySortOrder: "ASC",
     pharmacySearch: "",
     pharmacyPage: 1,
-    pharmacyStatus:   ""
-  })
-  console.log('filterBranch', filter);
+    pharmacyStatus: "",
+  });
+  console.log("filterBranch", filter);
 
   // Fetch Data for Branch Tab
   const { data: allBranch } = useQuery({
     queryKey: ["branchAlll", filter],
-    queryFn: ()=> branchApi({...filter}),
+    queryFn: () => branchApi({ ...filter }),
   });
-  console.log("allBranch", allBranch);  
+  console.log("allBranch", allBranch);
 
   // Porps for count ... child to parent
-  if(props.counts){
-    props.counts(allBranch?.count)
+  if (props.counts) {
+    props.counts(allBranch?.count);
   }
 
-  // useMemoizedFn 
+  // useMemoizedFn
   const updateFilter = useMemoizedFn((newValues: filterInterface) => {
     setFilter((prevParams) => {
       return {
@@ -64,7 +63,7 @@ const BranchesTabpage = (props: any) => {
     });
   });
 
-  // Columns  
+  // Columns
   const columns: ColumnsType<Doc> = [
     {
       title: (props) => <TableHeader title="Name" {...props} />,
@@ -73,7 +72,13 @@ const BranchesTabpage = (props: any) => {
       sorter: true,
       render: (name: Doc["name"], data: Doc) => (
         <Space>
-          <Avatar size={32} src={data?.name} style={{backgroundColor: '#ff9e16'}}>{name?.charAt(0)}</Avatar>
+          <Avatar
+            size={32}
+            src={data?.name}
+            style={{ backgroundColor: "#ff9e16" }}
+          >
+            {name?.charAt(0)}
+          </Avatar>
           <Link to={"/"}>{name}</Link>
         </Space>
       ),
@@ -102,7 +107,9 @@ const BranchesTabpage = (props: any) => {
       key: "pharmacy",
       render: (_, data) => (
         <Space>
-          <Avatar size={32} style={{backgroundColor: "green"}}>{data?.pharmacy?.name?.charAt(0)}</Avatar>
+          <Avatar size={32} style={{ backgroundColor: "green" }}>
+            {data?.pharmacy?.name?.charAt(0)}
+          </Avatar>
           <Link to={`/pharmacy/${data?.pharmacy?.id}`}>
             {data?.pharmacy?.name}
           </Link>
@@ -130,7 +137,15 @@ const BranchesTabpage = (props: any) => {
     <div className="tab-wrapper">
       <div className="filter-row-absolute">
         {" "}
-        <FilterRow hideCheckbox hideDatePicker />
+        <FilterRow
+          hideCheckbox
+          hideDatePicker
+          onSearch={(e) =>
+            e.target.value
+              ? updateFilter({ pharmacySearch: e.target.value })
+              : updateFilter({ pharmacySearch: "" })
+          }
+        />
       </div>
       <CustomTable
         columns={columns}
@@ -152,7 +167,7 @@ const BranchesTabpage = (props: any) => {
               pharmacyLength: value as number,
               pharmacyPage: 1,
             });
-            console.log('value', value);
+            console.log("value", value);
           },
         }}
       />
