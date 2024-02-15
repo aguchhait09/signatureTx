@@ -144,8 +144,10 @@ export const TableHeader = (props: { title?: string; sort?: boolean }) => {
   );
 };
 interface CustomtableProps extends TableProps<any> {
-  tableHeightsmall?: boolean;
-  perPageItem: React.ComponentProps<typeof Select>
+  tableHeightsmall?: boolean
+  perPageItem?: React.ComponentProps<typeof Select>
+  pharmacyPage?: number
+  pharmacyLength?: number 
 }
 const CustomTable = ({
   className,
@@ -154,7 +156,7 @@ const CustomTable = ({
   tableHeightsmall,
   pagination,
   perPageItem = { options: itemPerPage() },
-  ...rest
+  ...props
 }: CustomtableProps) => {
   return (
     <TableWrapper>
@@ -171,13 +173,13 @@ const CustomTable = ({
           showSizeChanger: false,
           ...pagination,
         }}
-        {...rest}
+        {...props}
       />
-      {perPageItem && !rest?.footer ? (
+      {perPageItem && !props?.footer ? (
         <Flex align="center" className="absolute-table-pagination">
           <p>View</p>
           <Select
-            defaultValue={5}
+            defaultValue={200}
             suffixIcon={<Chevorndown />}
             {...perPageItem}
           />

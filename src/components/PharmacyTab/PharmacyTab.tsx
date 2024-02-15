@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import CustomButtonPrimary from "UI/CustomButton/CustomButtonPrimary";
 import CustomTable, { TableHeader } from "UI/CustomTable/CustomTable";
 import CustomTag from "UI/CustomTag/CustomTag";
@@ -8,31 +9,66 @@ import { Avatar, Button, Flex, Space } from "antd";
 import { ColumnsType } from "antd/es/table";
 import FilterRow from "components/FilterRow/FilterRow";
 import { itemPerPage } from "lib/helpers/common.helper";
+import { pharmacyCall } from "lib/modules/pharmacyTab/functions/pharmacyTab.api";
 import { useState } from "react";
 // import assets from "json/assets";
 import { Link } from "react-router-dom";
 import { PharmacytabWrapper } from "styles/StyledComponents/PharmacytabWrapper";
-import { Data, Doc, pharmacyTab } from "typescript/interfaces/pharmacyTab.interface";
+import { Doc, pharmacyTab } from "typescript/interfaces/pharmacyTab.interface";
 
-interface propsType {
-  pharmacy: Data;
-  isPending: boolean;
+// interface propsType {
+//   pharmacy: Data;
+//   isPending: boolean;
+//   filterPass?: any
+// }
+
+interface filterInterface {
+  pharmacyLength?: number,
+  pharmacySortColumn?: string,
+  pharmacySortOrder?: string,
+  pharmacySearch?: string,
+  pharmacyPage?: number,
+  pharmacyStatus?: string
 }
+// interface typeParams{
+//     page?: number,
+//       length?: number,
+//       sort?: {
+//         column?: string,
+//         order?: string,
+//       },
+//       status?: string,
+//   }
 
-const PharmacyTab = (props: propsType) => {
+const PharmacyTab = (props: any) => {
 
-  const { pharmacy, isPending } = props;
-
-  const [filter, setFilter] = useState({
+  // const { pharmacy, isPending } = props;
+   
+  const [filter, setFilter] = useState<filterInterface>({
     pharmacyLength: 5,
     pharmacySortColumn: "name",
-    pharmacySortOrder: "DSC",
+    pharmacySortOrder: "ASC",
     pharmacySearch: "",
     pharmacyPage: 1,
+    pharmacyStatus:   ""
   })
+  console.log('filter', filter);
+
+  // Data Fetch
+  const { isPending, data: pharmacy } = useQuery({
+    queryKey: ["pharmacyTab", filter],
+    queryFn: () => pharmacyCall({...filter}),
+  });
+
+
+  console.log();
+
+  if(props.count){
+    props.count(pharmacy?.count)
+  }
 
   // useMemoizedFn -- not to change the function reference
-  const updateFilter = useMemoizedFn((newValues: typeof filter) => {
+  const updateFilter = useMemoizedFn((newValues: filterInterface) => {
     setFilter((prevParams) => {
       return {
         ...prevParams,
@@ -124,7 +160,7 @@ const PharmacyTab = (props: propsType) => {
           pageSize: filter?.pharmacyLength,
           current: filter?.pharmacyPage,
           onChange: (num) => {
-            updateFilter({ pharmacyPage: num});
+            updateFilter({ pharmacyPage: num });
           },
         }}
         loading={isPending}
@@ -133,9 +169,10 @@ const PharmacyTab = (props: propsType) => {
           value: Number(filter?.pharmacyLength),
           onChange: (value) => {
             updateFilter({
-              pharmacyLength: (value),
+              pharmacyLength: value as number,
               pharmacyPage: 1,
             });
+            console.log('value', value);
           },
         }}
       />

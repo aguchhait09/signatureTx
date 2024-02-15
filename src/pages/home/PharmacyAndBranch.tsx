@@ -1,42 +1,41 @@
-import { useQuery } from "@tanstack/react-query";
 import Layout from "Layout/Layout";
 import CustomTab from "UI/CustomTab/CustomTab";
 import { TabsProps } from "antd";
 import BranchesTabpage from "components/BranchesTabPage/BranchesTabpage";
 import PharmacyTab from "components/PharmacyTab/PharmacyTab";
-import { branchApi } from "lib/modules/branchTab/functions/branchTab.api";
-import { pharmacyCall } from "lib/modules/pharmacyTab/functions/pharmacyTab.api";
-import { DataBranchAll } from "typescript/interfaces/branchAll.interface";
-import { Data } from "typescript/interfaces/pharmacyTab.interface";
+import { useState } from "react";
 
 export default function PharmacyAndBranch() {
   // Fetch Data for Pharmacy Tab
-  const { isPending, data: pharmacy } = useQuery({
-    queryKey: ["pharmacyTab"],
-    queryFn: pharmacyCall,
-  });
-  console.log("pharmaData", pharmacy);
+  // const useCustomHook = () => {
+  //   const { isPending, data: pharmacy } = useQuery({
+  //     queryKey: ["pharmacyTab"],
+  //     queryFn: ()=>pharmacyCall,
+  //   });
+  //   console.log("pharmaData", pharmacy);
+  //   return { pharmacy, isPending }
+  // }
+  // Count
+  const [pharmacyCount, setPharmacyCount] = useState(0)
 
-  // Fetch Data for Branch Tab
-  const { data: allBranch } = useQuery({
-    queryKey: ["branchAlll"],
-    queryFn: branchApi,
-  });
-  console.log("allBranch", allBranch);
+
+
+  // const { isPending, pharmacy } = useCustomHook()
 
   // Pages Items
   const items: TabsProps["items"] = [
     {
       key: "1",
-      label: `Pharmacies (${pharmacy?.count})`,
+      label: `Pharmacies (${pharmacyCount})`,
       children: (
-        <PharmacyTab pharmacy={pharmacy as Data} isPending={isPending} />
+        // <PharmacyTab filterPass={queryParams} pharmacy={pharmacy as Data} isPending={isPending} />
+        <PharmacyTab count={setPharmacyCount} />
       ),
     },
     {
       key: "2",
-      label: `Branches (${allBranch?.count})`,
-      children: <BranchesTabpage allBranch={allBranch as DataBranchAll} />,
+      label: `Branches (12121)`,
+      children: <BranchesTabpage/>,
     },
   ];
   return (

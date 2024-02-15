@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { useQuery } from "@tanstack/react-query";
 import CustomButtonPrimary from "UI/CustomButton/CustomButtonPrimary";
 import CustomSwitch from "UI/CustomSwichWithLabel/CustomSwitch";
 import CustomTable, { TableHeader } from "UI/CustomTable/CustomTable";
@@ -9,6 +10,7 @@ import { Space, Avatar, Flex, Button, Typography } from "antd";
 import { ColumnsType } from "antd/es/table";
 import FilterRow from "components/FilterRow/FilterRow";
 import assets from "json/assets";
+import { branchApi } from "lib/modules/branchTab/functions/branchTab.api";
 import React from "react";
 import { Link } from "react-router-dom";
 import { DataBranchAll, Doc } from "typescript/interfaces/branchAll.interface";
@@ -17,9 +19,15 @@ interface propsType {
   allBranch: DataBranchAll;
 }
 
-const BranchesTabpage = (props: propsType) => {
-  const { allBranch } = props;
+const BranchesTabpage = () => {
+  // Fetch Data for Branch Tab
+  const { data: allBranch } = useQuery({
+    queryKey: ["branchAlll"],
+    queryFn: branchApi,
+  });
+  console.log("allBranch", allBranch);
 
+  // Columns  
   const columns: ColumnsType<Doc> = [
     {
       title: (props) => <TableHeader title="Name" {...props} />,
@@ -57,7 +65,7 @@ const BranchesTabpage = (props: propsType) => {
       key: "pharmacy",
       render: (_, data) => (
         <Space>
-          <Avatar size={32} src={data?.pharmacy?.logo} alt=""/>
+          <Avatar size={32} style={{backgroundColor: "green"}}>{data?.pharmacy?.name?.charAt(0)}</Avatar>
           <Link to={`/pharmacy/${data?.pharmacy?.id}`}>
             {data?.pharmacy?.name}
           </Link>
@@ -91,6 +99,7 @@ const BranchesTabpage = (props: propsType) => {
         columns={columns}
         dataSource={allBranch?.docs}
         tableHeightsmall
+        
       />
     </div>
   );
