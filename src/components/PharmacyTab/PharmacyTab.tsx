@@ -101,9 +101,9 @@ const PharmacyTab = (props: any) => {
             color={
               status === "active"
                 ? "success"
-                : status === "pending"
+                : status === "pending approval"
                   ? "processing"
-                  : "default"
+                  : "error"
             }
             text={
               status === "active"
@@ -149,7 +149,7 @@ const PharmacyTab = (props: any) => {
   return (
     <PharmacytabWrapper>
       <FilterRow hideDatePicker 
-      onChange={(e)=>(e.target.checked && updateFilter({pharmacyStatus: "pending approval"}))}
+      onChange={(e)=>(e.target.checked ? updateFilter({pharmacyStatus: "pending approval"}) : updateFilter({pharmacyStatus: ""}))}
       />
       <CustomTable
         columns={columns}
