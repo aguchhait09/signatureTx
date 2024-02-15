@@ -7,6 +7,7 @@ import FilterIcon from "UI/Icons/FilterIcon";
 import Searchicon from "UI/Icons/Searchicon";
 import XIcon from "UI/Icons/XIcon";
 import { Button, Checkbox, Flex, Input, Popover, Typography } from "antd";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 import { FilterRowWrapper } from "styles/StyledComponents/FilterRowWrapper";
 
@@ -18,6 +19,8 @@ interface FilterRowprops {
   showDownloadButton?: boolean;
   showAddButton?: boolean;
   hideCheckbox?: boolean;
+  // onChange?: ((status: string) => void) | undefined;
+  onChange?: ((e: CheckboxChangeEvent) => void) | undefined
 }
 
 const PopoverContent = () => {
@@ -49,6 +52,7 @@ const FilterRow = ({
   showDownloadButton,
   showAddButton,
   hideCheckbox,
+  onChange,
 }: FilterRowprops) => {
   return (
     <FilterRowWrapper>
@@ -103,7 +107,7 @@ const FilterRow = ({
 
         {!hideCheckbox ? (
           <Flex>
-            <Checkbox>Show only</Checkbox>
+            <Checkbox onChange={onChange}>Show only</Checkbox>
             <CustomTag color="processing" text="Approval Pending"></CustomTag>
           </Flex>
         ) : (

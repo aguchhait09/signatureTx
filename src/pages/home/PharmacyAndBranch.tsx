@@ -16,8 +16,9 @@ export default function PharmacyAndBranch() {
   //   return { pharmacy, isPending }
   // }
   
+  // State for count
   const [pharmacyCount, setPharmacyCount] = useState(0)
-
+  const [branchCount, setBranchCount] = useState(0)
 
 
   // const { isPending, pharmacy } = useCustomHook()
@@ -34,8 +35,8 @@ export default function PharmacyAndBranch() {
     },
     {
       key: "2",
-      label: `Branches (12121)`,
-      children: <BranchesTabpage/>,
+      label: `Branches (${branchCount})`,
+      children: <BranchesTabpage counts={setBranchCount}/>,
     },
   ];
   return (

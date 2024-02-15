@@ -20,7 +20,7 @@ export const pharmacyCall = async (params: filterInterface) => {
       order: params?.pharmacySortOrder,
     },
     // keyword: params?.pharmacySearch,  
-    // status: params?.pharmacyStatus
+    status: params?.pharmacyStatus
   });
   console.log("resPharmacy", res);
   return res?.data;

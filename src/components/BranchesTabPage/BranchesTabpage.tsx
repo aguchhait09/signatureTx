@@ -29,7 +29,7 @@ interface filterInterface {
   pharmacyStatus?: string
 }
 
-const BranchesTabpage = () => {
+const BranchesTabpage = (props: any) => {
 
   // State for payload
   const [filter, setFilter] = useState<filterInterface>({
@@ -48,6 +48,11 @@ const BranchesTabpage = () => {
     queryFn: ()=> branchApi({...filter}),
   });
   console.log("allBranch", allBranch);  
+
+  // Porps for count ... child to parent
+  if(props.counts){
+    props.counts(allBranch?.count)
+  }
 
   // useMemoizedFn 
   const updateFilter = useMemoizedFn((newValues: filterInterface) => {

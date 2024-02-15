@@ -59,9 +59,7 @@ const PharmacyTab = (props: any) => {
     queryFn: () => pharmacyCall({...filter}),
   });
 
-
-  console.log();
-
+  // Props for count ... child to parent
   if(props.count){
     props.count(pharmacy?.count)
   }
@@ -110,7 +108,7 @@ const PharmacyTab = (props: any) => {
             text={
               status === "active"
                 ? "Active"
-                : status === "pending"
+                : status === "pending approval"
                   ? "Approval Pending"
                   : "Inactive"
             }
@@ -150,7 +148,9 @@ const PharmacyTab = (props: any) => {
 
   return (
     <PharmacytabWrapper>
-      <FilterRow hideDatePicker />
+      <FilterRow hideDatePicker 
+      onChange={(e)=>(e.target.checked && updateFilter({pharmacyStatus: "pending approval"}))}
+      />
       <CustomTable
         columns={columns}
         dataSource={pharmacy?.docs}
