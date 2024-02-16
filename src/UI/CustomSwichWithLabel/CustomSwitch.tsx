@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Space, Switch, SwitchProps, Typography } from "antd";
-import React from "react";
 
 interface Swtichprops extends SwitchProps {
   label: string;
@@ -34,7 +33,7 @@ const SwitchWrapper = styled(Switch)`
 const CustomSwitch = ({ label, ...props }: Swtichprops) => {
   return (
     <Space size={6}>
-      <SwitchWrapper checked={props.checked} className={props.className} />
+      <SwitchWrapper checked={props.checked} className={props.className} {...props}/>
       <Typography.Text>{label}</Typography.Text>
     </Space>
   );

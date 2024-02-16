@@ -11,7 +11,7 @@ const endpoints = {
   },
   brances: {
     branchAll: "/pharmacy-branch/list/all",
-    update: "/pharmacy-branch/availability/update"
+    update: "/pharmacy-branch/availability/update",
   },
 };
 export default endpoints;

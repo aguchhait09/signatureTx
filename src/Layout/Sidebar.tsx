@@ -11,6 +11,7 @@ import OrderPrescriptionIcon from "UI/Icons/OrderPrescriptionIcon";
 import AdminPanelIcon from "UI/Icons/AdminPanelIcon";
 import LogoShortIcon from "UI/Icons/LogoShortIcon";
 import SupportIcon from "UI/Icons/SupportIcon";
+import { useNavigate } from "react-router";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -31,20 +32,21 @@ function getItem(
 }
 
 const items: MenuProps["items"] = [
-  getItem("Pharmacies & Branches", "sub1", <PharmaciesIcon />),
-
+  getItem("Pharmacies & Branches", "/", <PharmaciesIcon />),
+  
   getItem("Clinics", "sub2", <ClinicsIocn />),
-
+  
   getItem("Orders & Prescriptions", "sub3", <OrderPrescriptionIcon />),
-
+  
   getItem("Admin Panel Settings", "sub4", <AdminPanelIcon />),
-
+  
   getItem("Support", "sub5", <SupportIcon />),
 ];
-
 const Sidebar = () => {
+  const nav:any = useNavigate()
   const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
+    console.log('item', e);
+    nav(e.key)
   };
 
   const [Isclick, setIsclick] = useState(false);

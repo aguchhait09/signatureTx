@@ -12,16 +12,30 @@ interface filterInterface {
 }
 
 export const pharmacyCall = async (params: filterInterface) => {
-  const res = await axiosInstance.post<pharmacyTab>(endpoints.pharmacy.list, {
-    page: params?.pharmacyPage,
-    length: params?.pharmacyLength,
-    sort: {
-      column: params?.pharmacySortColumn,
-      order: params?.pharmacySortOrder,
-    },
-    keyword: params?.pharmacySearch,
-    status: params?.pharmacyStatus,
-  });
-  console.log("resPharmacy", res);
-  return res?.data;
+  if (params?.pharmacySearch?.length == 0 ||  params?.pharmacySearch?.length == 1) {
+    const res = await axiosInstance.post<pharmacyTab>(endpoints.pharmacy.list, {
+      page: params?.pharmacyPage,
+      length: params?.pharmacyLength,
+      sort: {
+        column: params?.pharmacySortColumn,
+        order: params?.pharmacySortOrder,
+      },  
+      status: params?.pharmacyStatus,
+    })
+    console.log("resPharmacy", res);
+    return res?.data;
+  } else {
+    const res = await axiosInstance.post<pharmacyTab>(endpoints.pharmacy.list, {
+      page: params?.pharmacyPage,
+      length: params?.pharmacyLength,
+      sort: {
+        column: params?.pharmacySortColumn,
+        order: params?.pharmacySortOrder,
+      },
+      keyword: params?.pharmacySearch,
+      status: params?.pharmacyStatus,
+    })
+    console.log("resPharmacy", res);
+    return res?.data;
+  }
 };

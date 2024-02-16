@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import useUrlState from "@ahooksjs/use-url-state";
 import { useQuery } from "@tanstack/react-query";
 import CustomButtonPrimary from "UI/CustomButton/CustomButtonPrimary";
 import CustomSwitch from "UI/CustomSwichWithLabel/CustomSwitch";
@@ -12,9 +13,10 @@ import { ColumnsType } from "antd/es/table";
 import FilterRow from "components/FilterRow/FilterRow";
 import { itemPerPage } from "lib/helpers/common.helper";
 import { branchApi } from "lib/modules/branchTab/functions/branchTab.api";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { DataBranchAll, Doc } from "typescript/interfaces/branchAll.interface";
+import { updateStatusButton } from "./Status.api";
+import { updateStatusInterface } from "typescript/interfaces/updateStatus.interface";
 
 interface propsType {
   allBranch: DataBranchAll;
@@ -27,26 +29,48 @@ interface filterInterface {
   pharmacySearch?: string;
   pharmacyPage?: number;
   pharmacyStatus?: string;
+  updateStat?: string;
+  branchId?: number
 }
 
 const BranchesTabpage = (props: any) => {
-  // State for payload
-  const [filter, setFilter] = useState<filterInterface>({
+  // State for payload allBranch
+  const [filter, setFilter] = useUrlState<filterInterface>({
     pharmacyLength: 5,
     pharmacySortColumn: "name",
     pharmacySortOrder: "ASC",
     pharmacySearch: "",
     pharmacyPage: 1,
     pharmacyStatus: "",
+    updateStat: "",
+    branchId: 1
   });
   console.log("filterBranch", filter);
+
+  // Update Status
+  const [stat, setStat] = useUrlState({
+    availabilityStatusBySuperAdmin: false,
+    branchId: 9,
+    superAdminAvailabilityStatusExpiry: "2024-02-16T12:30:00.000Z"
+  })
+  console.log('stat', stat);
 
   // Fetch Data for Branch Tab
   const { data: allBranch } = useQuery({
     queryKey: ["branchAlll", filter],
     queryFn: () => branchApi({ ...filter }),
+    enabled: !!filter
   });
   console.log("allBranch", allBranch);
+
+  // Fetch Update Status Data 
+  const { data: statusUpdate } = useQuery({
+    queryKey: ['updateStat', stat],
+    queryFn: updateStatusButton,
+    
+  })
+  console.log('StatusData', statusUpdate)
+
 
   // Porps for count ... child to parent
   if (props.counts) {
@@ -63,6 +87,8 @@ const BranchesTabpage = (props: any) => {
     });
   });
 
+  
+
   // Columns
   const columns: ColumnsType<Doc> = [
     {
@@ -77,24 +103,28 @@ const BranchesTabpage = (props: any) => {
             src={data?.name}
             style={{ backgroundColor: "#ff9e16" }}
           >
-            {name?.charAt(0)}
+            {name?.charAt(0).toUpperCase()}
           </Avatar>
-          <Link to={"/"}>{name}</Link>
+          <Link to={`/branch/${data?.id}`}>{name}</Link>
         </Space>
       ),
-
+      fixed: 'left',
       width: 300,
     },
     {
-      title: (props) => <TableHeader title="Status" {...props} />,
-      dataIndex: "isAvailableForAcceptOrder",
+      title: (props) => (
+        <TableHeader title="Status" {...props} />
+      ),
+      dataIndex: "status",
       key: "status",
-      render: (status) => (
+      render: (availabilityStatusBySuperAdmin , data: Doc) => (
         <>
           <CustomSwitch
-            label="Online"
-            checked={status}
+            label={availabilityStatusBySuperAdmin ? "Online" : "Offline"}
+            // checked={availabilityStatusBySuperAdmin}
             className="greenSwitch"
+            onChange={(e) => setStat({...stat, availabilityStatusBySuperAdmin: e, branchId: data?.id})}
+            defaultValue={stat?.availabilityStatusBySuperAdmin}
           />
         </>
       ),
@@ -142,8 +172,8 @@ const BranchesTabpage = (props: any) => {
           hideDatePicker
           onSearch={(e) =>
             e.target.value
-              ? updateFilter({ pharmacySearch: e.target.value })
-              : updateFilter({ pharmacySearch: "" })
+              ? updateFilter({ ...filter, pharmacyPage: 1, pharmacySearch: e.target.value })
+              : updateFilter({ ...filter, pharmacyPage: 1, pharmacySearch: "" })
           }
         />
       </div>
@@ -170,6 +200,8 @@ const BranchesTabpage = (props: any) => {
             console.log("value", value);
           },
         }}
+        scroll={{x: 1300}}
+        
       />
     </div>
   );

@@ -56,6 +56,7 @@ const PharmacyTab = (props: any) => {
   const { isPending, data: pharmacy } = useQuery({
     queryKey: ["pharmacyTab", filter],
     queryFn: () => pharmacyCall({ ...filter }),
+    enabled: !!filter
   });
 
   // Props for count ... child to parent
@@ -75,7 +76,7 @@ const PharmacyTab = (props: any) => {
 
   const columns: ColumnsType<Doc> = [
     {
-      title: (props) => <TableHeader title="Pharmacy" {...props} />,
+      title: (props) => <TableHeader title="Pharmacy" {...props} sort />,
       dataIndex: "name",
       key: "pharmacy",
       render: (name: Doc["name"], data: Doc) => {
@@ -84,16 +85,17 @@ const PharmacyTab = (props: any) => {
             <Avatar size={32} src="" style={{ backgroundColor: "#0D80D8" }}>
               {name?.charAt(0)}
             </Avatar>
-            <Link to={`/pharmacy/`}>{data?.name}</Link>
+            <Link to={`/pharmacy/${data?.id}`}>{data?.name}</Link>
           </Space>
         );
       },
       sorter: true,
       width: 282,
       defaultSortOrder: "ascend",
+      fixed: "left"
     },
     {
-      title: (props) => <TableHeader title="Status" {...props} />,
+      title: (props) => <TableHeader title="Status" {...props} sort/>,
       dataIndex: "status",
       key: "status",
       render: (status) => (
@@ -153,13 +155,13 @@ const PharmacyTab = (props: any) => {
         hideDatePicker
         onChange={(e) =>
           e.target.checked
-            ? updateFilter({ pharmacyStatus: "pending approval" })
-            : updateFilter({ pharmacyStatus: "" })
+            ? updateFilter({ ...filter, pharmacyStatus: "pending approval" })
+            : updateFilter({ ...filter, pharmacyStatus: "" })
         }
         onSearch={(e) => {
           e.target.value
-            ? updateFilter({ pharmacySearch: e.target.value })
-            : updateFilter({ ...filter });
+            ? updateFilter({ ...filter, pharmacyPage: 1, pharmacySearch: e.target.value })
+            : updateFilter({ ...filter, pharmacyPage: 1, pharmacySearch: "" });
         }}
       />
       <CustomTable

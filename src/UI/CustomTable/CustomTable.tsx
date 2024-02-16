@@ -131,13 +131,13 @@ const TableWrapper = styled("div")`
   }
 `;
 
-export const TableHeader = (props: { title?: string; sort?: boolean }) => {
+export const TableHeader = (props: { title?: string; sort?: boolean; }) => {
   return (
     <div className="sort-flex">
       <p className="table-header"> {props.title}</p>
       {props.sort && (
         <i>
-          <SortIcon />
+          <SortIcon/>
         </i>
       )}
     </div>
@@ -148,6 +148,7 @@ interface CustomtableProps extends TableProps<any> {
   perPageItem?: React.ComponentProps<typeof Select>
   pharmacyPage?: number
   pharmacyLength?: number 
+  pharmacySortOrder?: boolean
 }
 const CustomTable = ({
   className,

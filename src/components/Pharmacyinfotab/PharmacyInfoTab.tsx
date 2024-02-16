@@ -33,6 +33,9 @@ const PharmacyInfoTab = () => {
     };
   }, [pharmacyData]);
 
+  console.log('data', pharmacyData);
+  
+
   const navigate = useNavigate();
 
   return (
