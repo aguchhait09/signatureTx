@@ -1,7 +1,6 @@
 import CustomButtonPrimary from "UI/CustomButton/CustomButtonPrimary";
 import ClockIcon from "UI/Icons/ClockIcon";
 import { Button, Col, Flex, Row, Space, Typography } from "antd";
-
 import BankStatusAndSettingsCard from "components/BankStatusAndSettingCard/BankStatusAndSettingsCard";
 import InfoCardSmall from "components/InfoCardSmall/InfoCardSmall";
 import MedicationPricingCard from "components/MedicationPricingCard/MedicationPricingCard";
@@ -10,13 +9,32 @@ import usePharmacy from "lib/modules/pharmacy/hooks/usePharmacy";
 import { DataTagLarge } from "styles/StyledComponents/PharmaCardWrapper";
 import { PharmacyInfoWrapper } from "styles/StyledComponents/PharmacyInfoWrapper";
 import { useMemo } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import { branchCountApi } from "lib/modules/pharmacyTab/functions/branchCountFunc.api";
+
+interface propsInterface {
+  pharmacyId?: number
+}
 
 const PharmacyInfoTab = () => {
   const {
     pharmacyQuery: { data: pharmacyData },
   } = usePharmacy();
   console.log(pharmacyData, "pharmacyQuery");
+
+  // params
+  const {pharmacyId} = useParams()
+  const pharmaId = Number(pharmacyId)
+  console.log('asd', pharmaId);
+  
+  // Branch Data Count
+  const {data: dataCount} = useQuery({
+    queryKey: ['count'],
+    queryFn: ()=>branchCountApi(pharmaId as propsInterface)
+  })
+  console.log('dataCount', dataCount);
+  
 
   const details = useMemo((): React.ComponentProps<
     typeof DetailsCard
@@ -32,7 +50,6 @@ const PharmacyInfoTab = () => {
       status: pharmacyData?.status,
     };
   }, [pharmacyData]);
-
   console.log('data', pharmacyData);
   
 

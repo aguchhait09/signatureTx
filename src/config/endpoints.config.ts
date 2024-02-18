@@ -8,6 +8,7 @@ const endpoints = {
   pharmacy: {
     getDetails: (id?: string) => `pharmacy/get/${id}`,
     list: "/pharmacy/list",
+    branchCount: "/pharmacy/branch/count",
   },
   brances: {
     branchAll: "/pharmacy-branch/list/all",

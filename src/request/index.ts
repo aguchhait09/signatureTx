@@ -25,6 +25,8 @@ const unauthorizeAccessAutoClearExceptionalApiRoutes = Object.values(
 
 axiosInstance.interceptors.request.use((config) => {
   const accessToken = getAxiosAccessToken();
+  console.log('accessToken', accessToken);
+  
   if (accessToken) {
     config.headers["Authorization"] =
       config?.headers?.["Authorization"] || `${accessToken}`;
