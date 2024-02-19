@@ -11,6 +11,8 @@ interface filterInterface {
   pharmacyStatus?: string;
 }
 
+
+
 export const pharmacyCall = async (params: filterInterface) => {
   if (params?.pharmacySearch?.length == 0 ||  params?.pharmacySearch?.length == 1) {
     const res = await axiosInstance.post<pharmacyTab>(endpoints.pharmacy.list, {

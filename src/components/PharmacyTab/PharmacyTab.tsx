@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useDebounce } from "@uidotdev/usehooks";
 import CustomButtonPrimary from "UI/CustomButton/CustomButtonPrimary";
 import CustomTable, { TableHeader } from "UI/CustomTable/CustomTable";
 import CustomTag from "UI/CustomTag/CustomTag";
@@ -41,7 +42,7 @@ interface filterInterface {
 
 const PharmacyTab = (props: any) => {
   // const { pharmacy, isPending } = props;
-
+  
   const [filter, setFilter] = useState<filterInterface>({
     pharmacyLength: 5,
     pharmacySortColumn: "name",
@@ -51,11 +52,13 @@ const PharmacyTab = (props: any) => {
     pharmacyStatus: "",
   });
   console.log("filter", filter);
+  const debouncedFilter = useDebounce(filter, 500)
 
+  
   // Data Fetch
   const { isPending, data: pharmacy } = useQuery({
-    queryKey: ["pharmacyTab", filter],
-    queryFn: () => pharmacyCall({ ...filter }),
+    queryKey: ["pharmacyTab", debouncedFilter],
+    queryFn: () => pharmacyCall({ ...filter,  }),
     enabled: !!filter
   });
 
@@ -73,6 +76,7 @@ const PharmacyTab = (props: any) => {
       };
     });
   });
+
 
   const columns: ColumnsType<Doc> = [
     {
@@ -160,7 +164,7 @@ const PharmacyTab = (props: any) => {
         }
         onSearch={(e) => {
           e.target.value
-            ? updateFilter({ ...filter, pharmacyPage: 1, pharmacySearch: e.target.value })
+            ? updateFilter({ ...filter, pharmacyPage: 1, pharmacySearch: (e.target.value) })
             : updateFilter({ ...filter, pharmacyPage: 1, pharmacySearch: "" });
         }}
       />

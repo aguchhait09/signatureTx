@@ -25,15 +25,7 @@ const adminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "/pharmacy-info",
-    element: (
-      <AdminProtector>
-        <PharmacyInfo />
-      </AdminProtector>
-    ),
-  },
-  {
-    path: "/branch-info",
+    path: "/branch/:id",
     element: (
       <AdminProtector>
         <BranchInfo />

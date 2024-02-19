@@ -4,13 +4,18 @@ import { TabsProps } from "antd";
 import BranchInfoTab from "components/BranchInfoTab/BranchInfoTab";
 import HighDemandlinesTable from "components/HighDemandlinesTab/HighDemandlinesTable";
 import UserTab from "components/UserTab/UserTab";
+import { useState } from "react";
 
 const BranchInfo = () => {
+
+  const [name, setName] = useState("")
+  const [subName, setSubName] = useState("")
+
   const items: TabsProps["items"] = [
     {
       key: "1",
       label: "Branch Details",
-      children: <BranchInfoTab />,
+      children: <BranchInfoTab name={setName} sname={setSubName}/>,
     },
     {
       key: "2",
@@ -24,7 +29,7 @@ const BranchInfo = () => {
     },
   ];
   return (
-    <Layout Headertext={"Bright Side"} subHeader={"Spinal Health"} backButton>
+    <Layout Headertext={name} subHeader={subName} backButton>
       <div className="tab-wrapper">
         <CustomTab items={items} />
       </div>

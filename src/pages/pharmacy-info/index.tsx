@@ -10,6 +10,7 @@ import { PharmacyProvider } from "lib/modules/pharmacy/context/PharmacyContext";
 import BranchesTab from "components/BranchesTab/BranchesTab";
 import UserTab from "components/UserTab/UserTab";
 import MedicationsPriceOverrideTab from "components/MedicationsPriceOverrideTab/MedicationsPriceOverrideTab";
+import { useState } from "react";
 
 enum PharmacyTabsEnum {
   info = "info",
@@ -19,36 +20,37 @@ enum PharmacyTabsEnum {
   settings = "settings",
 }
 
-const items: TabsProps["items"] = [
-  {
-    key: PharmacyTabsEnum.info,
-    label: "Pharmacy Info",
-    children: <PharmacyInfoTab />,
-  },
-  {
-    key: PharmacyTabsEnum.branches,
-    label: "Branches",
-    children: <BranchesTab />,
-  },
-  {
-    key: PharmacyTabsEnum.users,
-    label: "Users",
-    children: <UserTab />,
-  },
-  {
-    key: PharmacyTabsEnum.medications,
-    label: "Medications Price Override",
-    children: <MedicationsPriceOverrideTab />,
-  },
-  {
-    key: PharmacyTabsEnum.settings,
-    label: "Settings",
-    children: <SettingsTab />,
-  },
-];
 
 const PharmacyInfo = () => {
   const { pharmacyId } = useParams();
+  const [pName, setPName] = useState("")
+  const items: TabsProps["items"] = [
+    {
+      key: PharmacyTabsEnum.info,
+      label: "Pharmacy Info",
+      children: <PharmacyInfoTab name={setPName}/>,
+    },
+    {
+      key: PharmacyTabsEnum.branches,
+      label: "Branches",
+      children: <BranchesTab />,
+    },
+    {
+      key: PharmacyTabsEnum.users,
+      label: "Users",
+      children: <UserTab />,
+    },
+    {
+      key: PharmacyTabsEnum.medications,
+      label: "Medications Price Override",
+      children: <MedicationsPriceOverrideTab />,
+    },
+    {
+      key: PharmacyTabsEnum.settings,
+      label: "Settings",
+      children: <SettingsTab />,
+    },
+  ];
   const [activeTab, setActiveTab] = useUrlState(
     {
       tab: PharmacyTabsEnum.info,
@@ -65,7 +67,7 @@ const PharmacyInfo = () => {
 
   return (
     <PharmacyProvider pharmacyId={pharmacyId}>
-      <Layout Headertext={"Spinal Health"} backButton>
+      <Layout Headertext={pName} backButton>
         <div className="tab-wrapper">
           {activeTab.tab === PharmacyTabsEnum.info ? (
             <div className="date-picker-wrap-absolute">

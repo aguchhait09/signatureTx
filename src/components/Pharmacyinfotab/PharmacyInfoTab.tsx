@@ -12,12 +12,11 @@ import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { branchCountApi } from "lib/modules/pharmacyTab/functions/branchCountFunc.api";
+import { avgResTime } from "lib/modules/pharmacyTab/functions/pharmaResponseTime.api";
+import { payoutReportApi } from "lib/modules/pharmacyTab/functions/pharmaPayoutSummary.api";
 
-interface propsInterface {
-  pharmacyId?: number
-}
 
-const PharmacyInfoTab = () => {
+const PharmacyInfoTab = (props: any) => {
   const {
     pharmacyQuery: { data: pharmacyData },
   } = usePharmacy();
@@ -25,16 +24,34 @@ const PharmacyInfoTab = () => {
 
   // params
   const {pharmacyId} = useParams()
-  const pharmaId = Number(pharmacyId)
-  console.log('asd', pharmaId);
+  console.log('asd', pharmacyId);
   
   // Branch Data Count
   const {data: dataCount} = useQuery({
     queryKey: ['count'],
-    queryFn: ()=>branchCountApi(pharmaId as propsInterface)
+    queryFn: ()=>branchCountApi({pharmacyId})
   })
-  console.log('dataCount', dataCount);
+  console.log('dataCount', typeof dataCount?.offlineCount);
+
+  // Avg Res Time
+  const {data: avgResponseTime} = useQuery({
+    queryKey: ['avgTimke'],
+    queryFn: ()=>avgResTime({pharmacyId})
+  })
+  console.log('ResTime', avgResponseTime);
+
+  // Payout Report 
+  const {data: payoutData} = useQuery({
+    queryKey: ['ReportPayout'],
+    queryFn: ()=>payoutReportApi({pharmacyId})
+  })
+  console.log('Report_Payout', payoutData);
   
+  // Props
+  if (props.name) {
+    props.name(pharmacyData?.name);
+  }
+
 
   const details = useMemo((): React.ComponentProps<
     typeof DetailsCard
@@ -76,21 +93,21 @@ const PharmacyInfoTab = () => {
         <Col md={6}>
           <InfoCardSmall
             title="# Branches"
-            titleRight={<Typography.Title level={5}>28</Typography.Title>}
+            titleRight={<Typography.Title level={5}>{Number(dataCount?.offlineCount) + Number(dataCount?.onlineCount)}</Typography.Title>}
           >
             <Flex>
               <DataTagLarge color="success">
                 <Space direction="vertical">
                   <p> Online</p>
 
-                  <Typography.Title level={5}>24</Typography.Title>
+                  <Typography.Title level={5}>{dataCount?.onlineCount}</Typography.Title>
                 </Space>
               </DataTagLarge>
               <DataTagLarge color="default">
                 <Space direction="vertical">
                   <p> Online</p>
 
-                  <Typography.Title level={5}>4</Typography.Title>
+                  <Typography.Title level={5}>{dataCount?.offlineCount}</Typography.Title>
                 </Space>
               </DataTagLarge>
             </Flex>
@@ -108,7 +125,7 @@ const PharmacyInfoTab = () => {
               />
             }
           >
-            <DataTagLarge color="default">48 min</DataTagLarge>
+            <DataTagLarge color="default">{avgResponseTime?.averageResponseTime === !null ? avgResponseTime?.averageResponseTime : 0} min</DataTagLarge>
           </InfoCardSmall>
         </Col>
         <Col md={6}>
@@ -124,7 +141,7 @@ const PharmacyInfoTab = () => {
               </CustomButtonPrimary>
             }
           >
-            <DataTagLarge color="warning">￡23 598</DataTagLarge>
+            <DataTagLarge color="warning">￡{payoutData?.totalPayoutAmount}</DataTagLarge>
           </InfoCardSmall>
         </Col>
         <Col md={6}>
@@ -140,7 +157,7 @@ const PharmacyInfoTab = () => {
               </CustomButtonPrimary>
             }
           >
-            <DataTagLarge color="processing">￡2 598</DataTagLarge>
+            <DataTagLarge color="processing">￡{payoutData?.totalCommission}</DataTagLarge>
           </InfoCardSmall>
         </Col>
       </Row>

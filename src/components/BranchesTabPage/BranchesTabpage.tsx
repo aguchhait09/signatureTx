@@ -17,6 +17,8 @@ import { Link } from "react-router-dom";
 import { DataBranchAll, Doc } from "typescript/interfaces/branchAll.interface";
 import { updateStatusButton } from "./Status.api";
 import { updateStatusInterface } from "typescript/interfaces/updateStatus.interface";
+import { useDebounce } from "@uidotdev/usehooks";
+import { useState } from "react";
 
 interface propsType {
   allBranch: DataBranchAll;
@@ -46,7 +48,8 @@ const BranchesTabpage = (props: any) => {
     branchId: 1
   });
   console.log("filterBranch", filter);
-
+  const debouncedFilter = useDebounce(filter.pharmacySearch, 1000)
+  
   // Update Status
   const [stat, setStat] = useUrlState({
     availabilityStatusBySuperAdmin: false,
@@ -54,11 +57,12 @@ const BranchesTabpage = (props: any) => {
     superAdminAvailabilityStatusExpiry: "2024-02-16T12:30:00.000Z"
   })
   console.log('stat', stat);
-
+  const [open, setOpen] = useState(stat.availabilityStatusBySuperAdmin)
+  
   // Fetch Data for Branch Tab
   const { data: allBranch } = useQuery({
-    queryKey: ["branchAlll", filter],
-    queryFn: () => branchApi({ ...filter }),
+    queryKey: ["branchAlll", debouncedFilter],
+    queryFn: () => branchApi({ ...filter, pharmacySearch: debouncedFilter }),
     enabled: !!filter
   });
   console.log("allBranch", allBranch);
@@ -115,8 +119,8 @@ const BranchesTabpage = (props: any) => {
       title: (props) => (
         <TableHeader title="Status" {...props} />
       ),
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "availabilityStatusBySuperAdmin",
+      key: "availabilityStatusBySuperAdmin",
       render: (availabilityStatusBySuperAdmin , data: Doc) => (
         <>
           <CustomSwitch
@@ -124,7 +128,7 @@ const BranchesTabpage = (props: any) => {
             // checked={availabilityStatusBySuperAdmin}
             className="greenSwitch"
             onChange={(e) => setStat({...stat, availabilityStatusBySuperAdmin: e, branchId: data?.id})}
-            defaultValue={stat?.availabilityStatusBySuperAdmin}
+            defaultChecked={availabilityStatusBySuperAdmin}
           />
         </>
       ),
