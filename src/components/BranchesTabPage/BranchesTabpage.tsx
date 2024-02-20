@@ -15,13 +15,12 @@ import { itemPerPage } from "lib/helpers/common.helper";
 import { branchApi } from "lib/modules/branchTab/functions/branchTab.api";
 import { Link } from "react-router-dom";
 import { DataBranchAll, Doc } from "typescript/interfaces/branchAll.interface";
-import { updateStatusButton } from "./Status.api";
-import { updateStatusInterface } from "typescript/interfaces/updateStatus.interface";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useState } from "react";
+import ToggleStatus from "./ToggleStatus";
 
 interface propsType {
   allBranch: DataBranchAll;
+  superAdminAvailabilityStatusExpiry?: string
 }
 
 interface filterInterface {
@@ -44,36 +43,19 @@ const BranchesTabpage = (props: any) => {
     pharmacySearch: "",
     pharmacyPage: 1,
     pharmacyStatus: "",
-    updateStat: "",
     branchId: 1
   });
   console.log("filterBranch", filter);
-  const debouncedFilter = useDebounce(filter.pharmacySearch, 1000)
-  
-  // Update Status
-  const [stat, setStat] = useUrlState({
-    availabilityStatusBySuperAdmin: false,
-    branchId: 9,
-    superAdminAvailabilityStatusExpiry: "2024-02-16T12:30:00.000Z"
-  })
-  console.log('stat', stat);
-  const [open, setOpen] = useState(stat.availabilityStatusBySuperAdmin)
-  
+  const debouncedFilter = useDebounce(filter, 500)
+
   // Fetch Data for Branch Tab
   const { data: allBranch } = useQuery({
     queryKey: ["branchAlll", debouncedFilter],
-    queryFn: () => branchApi({ ...filter, pharmacySearch: debouncedFilter }),
-    enabled: !!filter
+    queryFn: () => branchApi({ ...debouncedFilter }),
+    enabled: !!debouncedFilter
   });
   console.log("allBranch", allBranch);
 
-  // Fetch Update Status Data 
-  const { data: statusUpdate } = useQuery({
-    queryKey: ['updateStat', stat],
-    queryFn: updateStatusButton,
-    
-  })
-  console.log('StatusData', statusUpdate)
 
 
   // Porps for count ... child to parent
@@ -91,7 +73,7 @@ const BranchesTabpage = (props: any) => {
     });
   });
 
-  
+
 
   // Columns
   const columns: ColumnsType<Doc> = [
@@ -121,14 +103,19 @@ const BranchesTabpage = (props: any) => {
       ),
       dataIndex: "availabilityStatusBySuperAdmin",
       key: "availabilityStatusBySuperAdmin",
-      render: (availabilityStatusBySuperAdmin , data: Doc) => (
+      render: (availabilityStatusBySuperAdmin, data: Doc) => (
         <>
-          <CustomSwitch
+          {/* <CustomSwitch
             label={availabilityStatusBySuperAdmin ? "Online" : "Offline"}
             // checked={availabilityStatusBySuperAdmin}
             className="greenSwitch"
             onChange={(e) => setStat({...stat, availabilityStatusBySuperAdmin: e, branchId: data?.id})}
             defaultChecked={availabilityStatusBySuperAdmin}
+          /> */}
+          <ToggleStatus
+            
+            id={Number(data?.id)}
+            availabilityStatusBySuperAdmin={availabilityStatusBySuperAdmin}
           />
         </>
       ),
@@ -204,8 +191,8 @@ const BranchesTabpage = (props: any) => {
             console.log("value", value);
           },
         }}
-        scroll={{x: 1300}}
-        
+        scroll={{ x: 1300 }}
+
       />
     </div>
   );

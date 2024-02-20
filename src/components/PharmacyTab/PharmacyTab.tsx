@@ -58,7 +58,7 @@ const PharmacyTab = (props: any) => {
   // Data Fetch
   const { isPending, data: pharmacy } = useQuery({
     queryKey: ["pharmacyTab", debouncedFilter],
-    queryFn: () => pharmacyCall({ ...filter,  }),
+    queryFn: () => pharmacyCall({ ...filter }),
     enabled: !!filter
   });
 
@@ -80,7 +80,7 @@ const PharmacyTab = (props: any) => {
 
   const columns: ColumnsType<Doc> = [
     {
-      title: (props) => <TableHeader title="Pharmacy" {...props} sort />,
+      title: (props) => <TableHeader title="Pharmacy" {...props} />,
       dataIndex: "name",
       key: "pharmacy",
       render: (name: Doc["name"], data: Doc) => {
@@ -99,7 +99,7 @@ const PharmacyTab = (props: any) => {
       fixed: "left"
     },
     {
-      title: (props) => <TableHeader title="Status" {...props} sort/>,
+      title: (props) => <TableHeader title="Status" {...props} />,
       dataIndex: "status",
       key: "status",
       render: (status) => (
